@@ -4,10 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Gallery</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <h1>Image Gallery</h1>
+
+  <!-- Lightbox (hidden — becomes active in Step 5) -->
+  <div class="lightbox">
+    <div class="lightbox-card">
+      <img src="" alt="Expanded image">
+      <div class="lightbox-controls">
+        <button id="btn-prev">&#8592; Prev</button>
+        <button id="btn-close">Close</button>
+        <button id="btn-next">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
 
   <div class="gallery">
     <img src="https://picsum.photos/seed/1/600/400" alt="Gallery image 1">
