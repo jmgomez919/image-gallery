@@ -70,6 +70,9 @@
     const imgs        = galleryBtns.map(btn => btn.querySelector('img'));
     let currentIndex  = 0;
 
+    // Highlight the first image on load so keyboard users have a clear starting point
+    galleryBtns[0].classList.add('selected');
+
     // Build one dot per image
     const dots = imgs.map((_, i) => {
       const dot = document.createElement('button');
@@ -80,6 +83,9 @@
       dotsEl.appendChild(dot);
       return dot;
     });
+
+    // Track whether Enter is still held to prevent it firing on the newly focused btnClose
+    let enterGuard = false;
 
     function openLightbox(index) {
       currentIndex = index;
@@ -95,8 +101,12 @@
 
       lightbox.classList.add('active');
 
-      // Wait for the next paint before focusing so the element is fully rendered
-      requestAnimationFrame(() => btnClose.focus());
+      // Defer focus until after paint; guard prevents Enter from closing via btnClose
+      enterGuard = true;
+      requestAnimationFrame(() => {
+        btnClose.focus();
+        enterGuard = false;
+      });
     }
 
     function closeLightbox() {
@@ -112,7 +122,7 @@
     galleryBtns.forEach((btn, i) => btn.addEventListener('click', () => openLightbox(i)));
 
     // Lightbox controls
-    btnClose.addEventListener('click', closeLightbox);
+    btnClose.addEventListener('click', () => { if (!enterGuard) closeLightbox(); });
     btnPrev.addEventListener('click', () => navigate(-1));
     btnNext.addEventListener('click', () => navigate(1));
 
