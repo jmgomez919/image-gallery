@@ -10,8 +10,8 @@
 
   <h1>Image Gallery</h1>
 
-  <!-- Lightbox (.active class removed in Step 5 — JS will control it) -->
-  <div class="lightbox active">
+  <!-- Lightbox — toggled by JS -->
+  <div class="lightbox">
     <div class="lightbox-card">
       <button id="btn-close" aria-label="Close">&#10005;</button>
       <img src="https://picsum.photos/seed/3/900/600" alt="Expanded image">
@@ -36,12 +36,35 @@
   </div>
 
   <script>
-    const galleryImgs = document.querySelectorAll('.gallery img');
-    galleryImgs.forEach(img => {
+    const lightbox    = document.querySelector('.lightbox');
+    const lightboxImg = document.querySelector('.lightbox-card img');
+    const btnClose    = document.getElementById('btn-close');
+
+    function openLightbox(src, alt) {
+      lightboxImg.src = src;
+      lightboxImg.alt = alt;
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+    }
+
+    // Open on gallery image click, and mark as selected
+    document.querySelectorAll('.gallery img').forEach(img => {
       img.addEventListener('click', () => {
         document.querySelector('.gallery img.selected')?.classList.remove('selected');
         img.classList.add('selected');
+        openLightbox(img.src, img.alt);
       });
+    });
+
+    // Close on ✕ button
+    btnClose.addEventListener('click', closeLightbox);
+
+    // Close on backdrop click (click lands on overlay, not the card)
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) closeLightbox();
     });
   </script>
 </body>
