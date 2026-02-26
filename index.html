@@ -35,5 +35,14 @@
     <img src="https://picsum.photos/seed/10/600/400" alt="Gallery image 10">
   </div>
 
+  <script>
+    const galleryImgs = document.querySelectorAll('.gallery img');
+    galleryImgs.forEach(img => {
+      img.addEventListener('click', () => {
+        document.querySelector('.gallery img.selected')?.classList.remove('selected');
+        img.classList.add('selected');
+      });
+    });
+  </script>
 </body>
 </html>
