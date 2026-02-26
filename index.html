@@ -89,8 +89,9 @@
 
     function openLightbox(index) {
       currentIndex = index;
-      lightboxImg.src = imgs[index].src;
-      lightboxImg.alt = imgs[index].alt;
+      lightboxImg.src  = imgs[index].src;
+      lightboxImg.alt  = imgs[index].alt;
+      lightboxImg.style.opacity = '1'; // Fade image back in after crossfade
 
       // Sync gallery selection
       document.querySelector('.gallery-item.selected')?.classList.remove('selected');
@@ -111,11 +112,20 @@
 
     function closeLightbox() {
       lightbox.classList.remove('active');
+      lightboxImg.style.opacity = '1'; // Reset in case closed mid-crossfade
       galleryBtns[currentIndex].focus(); // Return focus to the gallery
     }
 
+    // Crossfade: fade out → swap image → fade in
+    // navTimeout prevents stacked calls on rapid key presses
+    let navTimeout = null;
     function navigate(dir) {
-      openLightbox((currentIndex + dir + imgs.length) % imgs.length);
+      clearTimeout(navTimeout);
+      lightboxImg.style.opacity = '0';
+      navTimeout = setTimeout(
+        () => openLightbox((currentIndex + dir + imgs.length) % imgs.length),
+        150
+      );
     }
 
     // Gallery button clicks (Enter/Space handled natively by the browser)

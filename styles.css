@@ -45,9 +45,11 @@ h1 {
   padding: 0;
   border-radius: var(--radius);
   display: block;
+  width: 100%;
   cursor: pointer;
   position: relative;
   z-index: 0;
+  scroll-margin-top: 1rem; /* breathing room when focus scrolls item into view */
 }
 
 .gallery-item img {
@@ -159,6 +161,8 @@ button:focus-visible {
   object-fit: contain;
   display: block;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  opacity: 1;
+  transition: opacity 0.15s ease;
 }
 
 /* Prev / Next row */
@@ -194,4 +198,64 @@ button:focus-visible {
   background-color: var(--bg);
   opacity: 1;
   transform: scale(1.45);
+}
+
+/* ── Responsive: tablet ───────────────────────────── */
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* ── Responsive: mobile ───────────────────────────── */
+@media (max-width: 520px) {
+  body {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+
+  .lightbox-card {
+    padding: 2.5rem 0.9rem 1rem;
+  }
+
+  .lightbox-card img {
+    max-height: 52vh;
+  }
+
+  #btn-prev,
+  #btn-next {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .lightbox-dots {
+    gap: 0.3rem;
+  }
+
+  .lightbox-controls {
+    gap: 0.6rem;
+  }
+}
+
+/* ── Respect reduced-motion preference ───────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
