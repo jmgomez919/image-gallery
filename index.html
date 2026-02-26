@@ -17,6 +17,7 @@
       <img src="https://picsum.photos/seed/3/900/600" alt="Expanded image">
       <div class="lightbox-controls">
         <button id="btn-prev">&#8592; Prev</button>
+        <div class="lightbox-dots"></div>
         <button id="btn-next">Next &#8594;</button>
       </div>
     </div>
@@ -38,11 +39,37 @@
   <script>
     const lightbox    = document.querySelector('.lightbox');
     const lightboxImg = document.querySelector('.lightbox-card img');
+    const dotsEl      = document.querySelector('.lightbox-dots');
     const btnClose    = document.getElementById('btn-close');
+    const btnPrev     = document.getElementById('btn-prev');
+    const btnNext     = document.getElementById('btn-next');
 
-    function openLightbox(src, alt) {
-      lightboxImg.src = src;
-      lightboxImg.alt = alt;
+    const imgs = Array.from(document.querySelectorAll('.gallery img'));
+    let currentIndex = 0;
+
+    // Build one dot per image
+    const dots = imgs.map((_, i) => {
+      const dot = document.createElement('button');
+      dot.classList.add('dot');
+      dot.setAttribute('aria-label', `Go to image ${i + 1}`);
+      dot.addEventListener('click', () => openLightbox(i));
+      dotsEl.appendChild(dot);
+      return dot;
+    });
+
+    function openLightbox(index) {
+      currentIndex = index;
+      const img = imgs[index];
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+
+      // Sync gallery selection
+      document.querySelector('.gallery img.selected')?.classList.remove('selected');
+      img.classList.add('selected');
+
+      // Sync active dot
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+
       lightbox.classList.add('active');
     }
 
@@ -50,19 +77,19 @@
       lightbox.classList.remove('active');
     }
 
-    // Open on gallery image click, and mark as selected
-    document.querySelectorAll('.gallery img').forEach(img => {
-      img.addEventListener('click', () => {
-        document.querySelector('.gallery img.selected')?.classList.remove('selected');
-        img.classList.add('selected');
-        openLightbox(img.src, img.alt);
-      });
-    });
+    function navigate(dir) {
+      openLightbox((currentIndex + dir + imgs.length) % imgs.length);
+    }
 
-    // Close on ✕ button
+    // Gallery image clicks
+    imgs.forEach((img, i) => img.addEventListener('click', () => openLightbox(i)));
+
+    // Controls
     btnClose.addEventListener('click', closeLightbox);
+    btnPrev.addEventListener('click', () => navigate(-1));
+    btnNext.addEventListener('click', () => navigate(1));
 
-    // Close on backdrop click (click lands on overlay, not the card)
+    // Backdrop click
     lightbox.addEventListener('click', e => {
       if (e.target === lightbox) closeLightbox();
     });
