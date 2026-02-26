@@ -13,12 +13,12 @@
   <!-- Lightbox — toggled by JS -->
   <div class="lightbox">
     <div class="lightbox-card">
-      <button id="btn-close" aria-label="Close">&#10005;</button>
+      <button id="btn-close" type="button" aria-label="Close">&#10005;</button>
       <img src="https://picsum.photos/seed/3/900/600" alt="Expanded image">
       <div class="lightbox-controls">
-        <button id="btn-prev">&#8592; Prev</button>
+        <button id="btn-prev" type="button">&#8592; Prev</button>
         <div class="lightbox-dots"></div>
-        <button id="btn-next">Next &#8594;</button>
+        <button id="btn-next" type="button">Next &#8594;</button>
       </div>
     </div>
   </div>
@@ -50,6 +50,7 @@
     // Build one dot per image
     const dots = imgs.map((_, i) => {
       const dot = document.createElement('button');
+      dot.type = 'button';
       dot.classList.add('dot');
       dot.setAttribute('aria-label', `Go to image ${i + 1}`);
       dot.addEventListener('click', () => openLightbox(i));
