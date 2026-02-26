@@ -38,32 +38,39 @@ h1 {
   margin: 0 auto;
 }
 
-.gallery img {
+/* Reset button chrome so the wrapper is invisible */
+.gallery-item {
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: var(--radius);
+  display: block;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+}
+
+.gallery-item img {
   width: 100%;
   aspect-ratio: 3 / 2;
   object-fit: cover;
   border-radius: var(--radius);
   display: block;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, outline 0.2s ease;
-  position: relative;
-  z-index: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Subtle lift on hover */
-.gallery img:hover {
+.gallery-item:hover img {
   transform: scale(1.04);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
-  z-index: 1;
 }
 
-/* Distinct "selected" state when clicked */
-.gallery img.selected {
+/* Distinct selected state */
+.gallery-item.selected img {
   transform: scale(1.08);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
   outline: 3px solid var(--btn);
   outline-offset: 3px;
-  z-index: 2;
 }
 
 /* ── Button base (shared by nav + close) ─────────── */
@@ -91,7 +98,7 @@ button:focus-visible {
   box-shadow: 0 0 0 5px rgba(245, 225, 0, 0.25);
 }
 
-.gallery img:focus-visible {
+.gallery-item:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 4px;
   box-shadow: 0 0 0 5px rgba(245, 225, 0, 0.25);

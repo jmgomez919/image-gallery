@@ -23,17 +23,38 @@
     </div>
   </div>
 
+  <!-- Each image wrapped in a <button> for reliable Enter/Space support -->
   <div class="gallery">
-    <img src="https://picsum.photos/seed/1/600/400" alt="Gallery image 1">
-    <img src="https://picsum.photos/seed/2/600/400" alt="Gallery image 2">
-    <img src="https://picsum.photos/seed/3/600/400" alt="Gallery image 3">
-    <img src="https://picsum.photos/seed/4/600/400" alt="Gallery image 4">
-    <img src="https://picsum.photos/seed/5/600/400" alt="Gallery image 5">
-    <img src="https://picsum.photos/seed/6/600/400" alt="Gallery image 6">
-    <img src="https://picsum.photos/seed/7/600/400" alt="Gallery image 7">
-    <img src="https://picsum.photos/seed/8/600/400" alt="Gallery image 8">
-    <img src="https://picsum.photos/seed/9/600/400" alt="Gallery image 9">
-    <img src="https://picsum.photos/seed/10/600/400" alt="Gallery image 10">
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/1/600/400" alt="Gallery image 1">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/2/600/400" alt="Gallery image 2">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/3/600/400" alt="Gallery image 3">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/4/600/400" alt="Gallery image 4">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/5/600/400" alt="Gallery image 5">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/6/600/400" alt="Gallery image 6">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/7/600/400" alt="Gallery image 7">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/8/600/400" alt="Gallery image 8">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/9/600/400" alt="Gallery image 9">
+    </button>
+    <button type="button" class="gallery-item">
+      <img src="https://picsum.photos/seed/10/600/400" alt="Gallery image 10">
+    </button>
   </div>
 
   <script>
@@ -44,18 +65,10 @@
     const btnPrev     = document.getElementById('btn-prev');
     const btnNext     = document.getElementById('btn-next');
 
-    const imgs = Array.from(document.querySelectorAll('.gallery img'));
-    let currentIndex = 0;
-
-    // Make gallery images keyboard-focusable and Enter-openable
-    imgs.forEach((img, i) => {
-      img.setAttribute('tabindex', '0');
-      img.setAttribute('role', 'button');
-      img.addEventListener('click', () => openLightbox(i));
-      img.addEventListener('keydown', e => {
-        if (e.key === 'Enter') openLightbox(i);
-      });
-    });
+    // Gallery buttons are the interactive elements; imgs are their children
+    const galleryBtns = Array.from(document.querySelectorAll('.gallery-item'));
+    const imgs        = galleryBtns.map(btn => btn.querySelector('img'));
+    let currentIndex  = 0;
 
     // Build one dot per image
     const dots = imgs.map((_, i) => {
@@ -70,31 +83,35 @@
 
     function openLightbox(index) {
       currentIndex = index;
-      const img = imgs[index];
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
+      lightboxImg.src = imgs[index].src;
+      lightboxImg.alt = imgs[index].alt;
 
       // Sync gallery selection
-      document.querySelector('.gallery img.selected')?.classList.remove('selected');
-      img.classList.add('selected');
+      document.querySelector('.gallery-item.selected')?.classList.remove('selected');
+      galleryBtns[index].classList.add('selected');
 
       // Sync active dot
       dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
 
       lightbox.classList.add('active');
-      btnClose.focus(); // Move keyboard focus into the lightbox
+
+      // Wait for the next paint before focusing so the element is fully rendered
+      requestAnimationFrame(() => btnClose.focus());
     }
 
     function closeLightbox() {
       lightbox.classList.remove('active');
-      imgs[currentIndex].focus(); // Return focus to the gallery image
+      galleryBtns[currentIndex].focus(); // Return focus to the gallery
     }
 
     function navigate(dir) {
       openLightbox((currentIndex + dir + imgs.length) % imgs.length);
     }
 
-    // Controls
+    // Gallery button clicks (Enter/Space handled natively by the browser)
+    galleryBtns.forEach((btn, i) => btn.addEventListener('click', () => openLightbox(i)));
+
+    // Lightbox controls
     btnClose.addEventListener('click', closeLightbox);
     btnPrev.addEventListener('click', () => navigate(-1));
     btnNext.addEventListener('click', () => navigate(1));
@@ -104,7 +121,7 @@
       if (e.target === lightbox) closeLightbox();
     });
 
-    // Keyboard navigation
+    // Keyboard navigation (arrow keys + Escape)
     document.addEventListener('keydown', e => {
       if (!lightbox.classList.contains('active')) return;
       if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1);  }
