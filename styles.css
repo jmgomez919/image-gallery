@@ -4,6 +4,7 @@
   --btn:            #c9a7eb;   /* light purple buttons         */
   --btn-hover:      #b88de0;   /* slightly deeper on hover     */
   --lightbox-bg:    #ffffff;   /* white lightbox card          */
+  --focus:          #f5e100;   /* yellow keyboard focus ring   */
   --radius:         12px;
 }
 
@@ -80,6 +81,21 @@ button {
 
 button:hover {
   background-color: var(--btn-hover);
+}
+
+/* ── Keyboard focus (yellow highlight) ────────────── */
+/* :focus-visible fires only for keyboard nav, not mouse clicks */
+button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(245, 225, 0, 0.25);
+}
+
+.gallery img:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 5px rgba(245, 225, 0, 0.25);
+  z-index: 1;
 }
 
 /* ── Lightbox overlay ─────────────────────────────── */

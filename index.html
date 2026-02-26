@@ -47,6 +47,16 @@
     const imgs = Array.from(document.querySelectorAll('.gallery img'));
     let currentIndex = 0;
 
+    // Make gallery images keyboard-focusable and Enter-openable
+    imgs.forEach((img, i) => {
+      img.setAttribute('tabindex', '0');
+      img.setAttribute('role', 'button');
+      img.addEventListener('click', () => openLightbox(i));
+      img.addEventListener('keydown', e => {
+        if (e.key === 'Enter') openLightbox(i);
+      });
+    });
+
     // Build one dot per image
     const dots = imgs.map((_, i) => {
       const dot = document.createElement('button');
@@ -72,18 +82,17 @@
       dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
 
       lightbox.classList.add('active');
+      btnClose.focus(); // Move keyboard focus into the lightbox
     }
 
     function closeLightbox() {
       lightbox.classList.remove('active');
+      imgs[currentIndex].focus(); // Return focus to the gallery image
     }
 
     function navigate(dir) {
       openLightbox((currentIndex + dir + imgs.length) % imgs.length);
     }
-
-    // Gallery image clicks
-    imgs.forEach((img, i) => img.addEventListener('click', () => openLightbox(i)));
 
     // Controls
     btnClose.addEventListener('click', closeLightbox);
@@ -93,6 +102,14 @@
     // Backdrop click
     lightbox.addEventListener('click', e => {
       if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1);  }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); navigate(-1); }
+      if (e.key === 'Escape')     closeLightbox();
     });
   </script>
 </body>
