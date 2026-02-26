@@ -10,13 +10,13 @@
 
   <h1>Image Gallery</h1>
 
-  <!-- Lightbox (hidden — becomes active in Step 5) -->
-  <div class="lightbox">
+  <!-- Lightbox (.active class removed in Step 5 — JS will control it) -->
+  <div class="lightbox active">
     <div class="lightbox-card">
-      <img src="" alt="Expanded image">
+      <button id="btn-close" aria-label="Close">&#10005;</button>
+      <img src="https://picsum.photos/seed/3/900/600" alt="Expanded image">
       <div class="lightbox-controls">
         <button id="btn-prev">&#8592; Prev</button>
-        <button id="btn-close">Close</button>
         <button id="btn-next">Next &#8594;</button>
       </div>
     </div>
