@@ -1,20 +1,20 @@
 # Image Gallery — Process Reflection
 
-**Project:** Responsive Image Gallery with Lightbox
-**Author:** [Your name]
-**Date:** [Date]
+**Project:** Responsive Image Gallery
+**Author:** Jacob Gomez
+**Date:** February 25, 2026
 
 ---
 
 ## Overview
 
-[Describe the project in your own words. What does it do? Who is it for?]
+For this Browser-AI Development Project, I decided to create an interactive and accessible image gallery website to demonstrate the feasibility of prompt-guided code generation in segmented steps. The objective of my project was to interact with my Claude Code in a constructive manner, providing not only prompts but feedback and encouraging the language model to re-check it's responses and code for any errors while developing said project.
 
 ---
 
 ## Planning
 
-[How did breaking the project into steps affect your workflow? Was the step-by-step approach helpful?]
+The implimentation of a step-by-step approach to developing the code and files of this project proved to be very helpful and efficient. Dividing the prompt into several stages of generation, refinement, and adjustments, it closed any room for error that could be prevalent amongst large, wordy multi-paragraphed prompts. This approach provided a focused and purposeful means of developing my website and allowing for multiple chances to test the product mid-development to search for potential faults in user interactivity.
 
 ---
 
